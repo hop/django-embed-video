@@ -349,6 +349,40 @@ class YoutubeBackend(VideoBackend):
         return None
 
 
+class YoutubePlaylistBackend(YoutubeBackend):
+    """
+    Backend for YouTube playlist URLs.
+    """
+
+    re_detect = re.compile(r"^(http(s)?://)?(www\.|m\.)?youtu(\.?)be(\.com)?/playlist.*", re.I)
+
+    re_code = re.compile(
+        r"""youtu(\.?)be(\.com)?/  # match youtube's domains
+            (\#/)? # for mobile urls
+            (playlist\?list=)?  # match the youtube page url
+            (?P<code>[\w\-]{34})[a-z0-9;:@?&%=+/\$_.-]*  # match and extract
+        """,
+        re.I | re.X,
+    )
+
+    pattern_url = "{protocol}://www.youtube.com/embed/videoseries?list={code}"
+    default_query = None
+
+    def get_code(self):
+        code = super().get_code()
+
+        if not code:
+            parsed_url = urlparse.urlparse(self._url)
+            parsed_qs = urlparse.parse_qs(parsed_url.query)
+
+            if "list" in parsed_qs:
+                code = parsed_qs["list"][0]
+            else:
+                raise UnknownIdException("Cannot get ID from `{0}`".format(self._url))
+
+        return code
+
+
 class VimeoBackend(VideoBackend):
     """
     Backend for Vimeo URLs.
