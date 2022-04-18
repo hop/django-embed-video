@@ -2,8 +2,24 @@
 Changes
 =======
 
-Unreleased
-----------
+
+Release 1.4.4 (April 18, 2022)
+------------------------------
+
+- Add ``EMBED_VIDEO_YOUTUBE_CHECK_THUMBNAIL`` to settings.
+- Drop support for EOL Django 2.2.
+
+
+Release 1.4.3 (April 8, 2022)
+------------------------------
+
+- Add support for YouTube short URLs.
+
+
+Release 1.4.2 (March 17, 2022)
+------------------------------
+
+- Add Polish translation
 
 
 Release 1.4.1 (January 6, 2022)
